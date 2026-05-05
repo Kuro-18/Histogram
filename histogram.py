@@ -3,53 +3,46 @@ import matplotlib.pyplot as plt
 
 # -----------------------------
 
+# Set random seed for reproducibility
 np.random.seed(42)
 
+# Simulate 500 Filipino users' social media usage (% of time spent)
+# Mean is high because PH has heavy social media usage
 num_users = 500
+mean_usage = 80
+std_dev = 10
 
-# Simulated usage distributions (% of usage intensity per user)
-# Higher mean = more commonly used in the Philippines
+usage_data = np.random.normal(loc=mean_usage, scale=std_dev, size=num_users)
 
-facebook = np.clip(np.random.normal(90, 5, num_users), 0, 100)
-youtube = np.clip(np.random.normal(85, 7, num_users), 0, 100)
-tiktok = np.clip(np.random.normal(80, 9, num_users), 0, 100)
-instagram = np.clip(np.random.normal(75, 10, num_users), 0, 100)
-twitter = np.clip(np.random.normal(60, 12, num_users), 0, 100)
+# Ensure values stay within realistic bounds (0% to 100%)
+usage_data = np.clip(usage_data, 0, 100)
 
 # -----------------------------
 
-plt.figure(figsize=(12, 7))
+plt.figure(figsize=(10, 6))
 
-# Histogram styling for better comparison
-bins = 12
-alpha = 0.5
-
-plt.hist(facebook, bins=bins, alpha=alpha, label="Facebook")
-plt.hist(youtube, bins=bins, alpha=alpha, label="YouTube")
-plt.hist(tiktok, bins=bins, alpha=alpha, label="TikTok")
-plt.hist(instagram, bins=bins, alpha=alpha, label="Instagram")
-plt.hist(twitter, bins=bins, alpha=alpha, label="Twitter")
+plt.hist(
+    usage_data,
+    bins=12,
+    edgecolor="black"
+)
 
 # -----------------------------
 
-plt.title("Social Media Usage Distribution per Platform (Philippines)", fontsize=14)
+
+plt.title("Distribution of Social Media Usage Among Filipinos", fontsize=14)
 plt.xlabel("Usage Percentage (%)", fontsize=12)
 plt.ylabel("Number of Users", fontsize=12)
 
-plt.grid(axis="y", linestyle="--", alpha=0.4)
-plt.legend()
+# Add grid for readability
+plt.grid(axis="y", linestyle="--", alpha=0.7)
 
 # -----------------------------
 
-for data, name in [
-    (facebook, "Facebook"),
-    (youtube, "YouTube"),
-    (tiktok, "TikTok"),
-    (instagram, "Instagram"),
-    (twitter, "Twitter")
-]:
-    mean_val = np.mean(data)
-    plt.axvline(mean_val, linestyle="dashed", alpha=0.3)
+mean_value = np.mean(usage_data)
+
+plt.axvline(mean_value, linestyle="dashed", linewidth=2)
+plt.text(mean_value + 1, 40, f"Mean: {mean_value:.2f}%", rotation=90)
 
 # -----------------------------
 
